@@ -164,7 +164,7 @@ void handle_usb_mode_set(struct mg_connection *c, struct mg_http_message *hm) {
     
     char mode_str[32] = {0};
     int permanent = 0;
-    int bval = 0;
+    bool bval = false;
     
     /* 解析JSON参数 */
     char *mode_val = mg_json_get_str(hm->body, "$.mode");

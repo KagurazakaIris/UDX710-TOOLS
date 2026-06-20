@@ -203,7 +203,7 @@ void handle_airplane_mode(struct mg_connection *c, struct mg_http_message *hm) {
   HTTP_CHECK_POST(c, hm);
 
   int enabled = -1;
-  int val = 0;
+  bool val = false;
   if (mg_json_get_bool(hm->body, "$.enabled", &val)) {
     enabled = val;
   }
@@ -786,7 +786,7 @@ void handle_sms_fix_set(struct mg_connection *c, struct mg_http_message *hm) {
   HTTP_CHECK_POST(c, hm);
 
   int enabled = 0;
-  int val = 0;
+  bool val = false;
   if (mg_json_get_bool(hm->body, "$.enabled", &val)) {
     enabled = val;
   }
@@ -1038,7 +1038,7 @@ void handle_data_status(struct mg_connection *c, struct mg_http_message *hm) {
   } else if (hm->method.len == 4 && memcmp(hm->method.buf, "POST", 4) == 0) {
     /* POST - 设置数据连接状态 */
     int active = 0;
-    int val = 0;
+    bool val = false;
     if (mg_json_get_bool(hm->body, "$.active", &val)) {
       active = val;
     } else {
@@ -1093,7 +1093,7 @@ void handle_roaming_status(struct mg_connection *c,
   } else if (hm->method.len == 4 && memcmp(hm->method.buf, "POST", 4) == 0) {
     /* POST - 设置漫游允许状态 */
     int allowed = 0;
-    int val = 0;
+    bool val = false;
     if (mg_json_get_bool(hm->body, "$.allowed", &val)) {
       allowed = val;
     } else {
@@ -1484,7 +1484,7 @@ void handle_script_list(struct mg_connection *c, struct mg_http_message *hm) {
           char item[70000];
           snprintf(item, sizeof(item),
                    "%s{\"name\":\"%s\",\"size\":%ld,\"mtime\":%ld,\"content\":"
-                   "%s}",
+                   "\"%s\"}",
                    first ? "" : ",", entry->d_name, st.st_size, st.st_mtime,
                    escaped);
           strcat(json, item);
@@ -3197,5 +3197,17 @@ void handle_security_factory_reset(struct mg_connection *c,
     HTTP_ERROR(c, 400, "请输入确认文本：已知晓风险");
   } else {
     HTTP_ERROR(c, 400, "答案不正确或未设置密保");
+  }
+}
+
+/* POST /api/reload - 热重载 ofono 连接 */
+void handle_reload(struct mg_connection *c, struct mg_http_message *hm) {
+  HTTP_CHECK_POST(c, hm);
+
+  int ret = ofono_reload();
+  if (ret) {
+    HTTP_OK(c, "{\"status\":\"ok\",\"message\":\"ofono 连接已重新加载\"}");
+  } else {
+    HTTP_ERROR(c, 500, "ofono 重新加载失败");
   }
 }

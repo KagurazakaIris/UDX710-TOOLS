@@ -260,6 +260,13 @@ void ofono_stop_data_monitor(void);
  */
 int ofono_is_data_monitor_running(void);
 
+/**
+ * 重新加载 ofono 连接（热重载）
+ * 断开现有连接并重新初始化 D-Bus、modem proxy 和数据监听
+ * @return 成功返回1，失败返回0
+ */
+int ofono_reload(void);
+
 #ifdef __cplusplus
 }
 #endif

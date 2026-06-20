@@ -19,6 +19,7 @@ void handle_set_network(struct mg_connection *c, struct mg_http_message *hm);
 void handle_switch(struct mg_connection *c, struct mg_http_message *hm);
 void handle_airplane_mode(struct mg_connection *c, struct mg_http_message *hm);
 void handle_device_control(struct mg_connection *c, struct mg_http_message *hm);
+void handle_reload(struct mg_connection *c, struct mg_http_message *hm);
 void handle_clear_cache(struct mg_connection *c, struct mg_http_message *hm);
 void handle_get_current_band(struct mg_connection *c,
                              struct mg_http_message *hm);

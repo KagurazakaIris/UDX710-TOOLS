@@ -258,7 +258,7 @@ void handle_phone_case(struct mg_connection *c, struct mg_http_message *hm) {
     else if (hm->method.len == 4 && memcmp(hm->method.buf, "POST", 4) == 0) {
         /* POST - 设置状态 */
         int enabled = 0;
-        int val = 0;
+        bool val = false;
         if (mg_json_get_bool(hm->body, "$.enabled", &val)) {
             enabled = val;
         }

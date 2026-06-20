@@ -348,7 +348,7 @@ void handle_charge_config(struct mg_connection *c, struct mg_http_message *hm) {
         /* POST - 设置配置 */
         int enabled = 0, start = 20, stop = 80;
         double val = 0;
-        int bval = 0;
+        bool bval = false;
 
         /* 使用mongoose内置JSON解析 */
         if (mg_json_get_bool(hm->body, "$.enabled", &bval)) enabled = bval;

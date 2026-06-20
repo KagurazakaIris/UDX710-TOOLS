@@ -175,6 +175,8 @@ static void http_handler(struct mg_connection *c, int ev, void *ev_data) {
       handle_clear_cache(c, hm);
     } else if (mg_match(hm->uri, mg_str("/api/current_band"), NULL)) {
       handle_get_current_band(c, hm);
+    } else if (mg_match(hm->uri, mg_str("/api/reload"), NULL)) {
+      handle_reload(c, hm);
     }
     /* 高级网络 API */
     else if (mg_match(hm->uri, mg_str("/api/bands"), NULL)) {
